@@ -8,6 +8,10 @@ body {
   color: #001737;
 }
 
+a {
+  text-decoration: none;
+}
+
 #col {
   position: relative;
   float: left;

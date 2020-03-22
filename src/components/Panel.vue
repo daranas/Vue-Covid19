@@ -68,13 +68,12 @@ export default {
     .panel-content {
       padding: 2rem;
       .last-update {
-        color: #78829e;
+        color: #8094ae;
         font-size: 12px;
-        margin-top: 10px;
+        margin-top: 8px;
         margin-bottom: 30px;
         span {
           color: #155724;
-          font-weight: bold;
         }
       }
 
@@ -82,7 +81,7 @@ export default {
         text-align: center;
         h6 {
           color: #8392a5;
-          font-size: 11px;
+          font-size: 12px;
           letter-spacing: 0.5px;
           text-transform: uppercase;
           margin: 0 0 5px;
