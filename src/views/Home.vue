@@ -2,7 +2,7 @@
   <div>
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
     <Panel />
-    <Panel />
+    <Map />
   </div>
 </template>
 
@@ -10,12 +10,14 @@
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 import Panel from '@/components/Panel'
+import Map from '@/components/Map'
 
 export default {
   name: 'Home',
   components: {
     // HelloWorld,
-    Panel
+    Panel,
+    Map
   }
 }
 </script>
