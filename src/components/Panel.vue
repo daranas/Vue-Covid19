@@ -1,8 +1,7 @@
 <template>
   <div id="col" class="panel">
     <div class="panel-content">
-      <v-select :options="countryOptions" label="country" />
-      <h1 class="panel-title">Indonesia</h1>
+      <v-select v-model="countrySelected" :options="countryOptions" label="country" />
       <p class="last-update">Update Terakhir: <span>2020-03-22</span></p>
       <div class="row">
         <div class="col-md-4 col-xs-12 col-sm-12">
@@ -40,6 +39,7 @@ export default {
         deaths: 0,
         update: 0
       },
+      countrySelected: 'Indonesia',
       countryOptions: countryCode.country_codes
     }
   },
@@ -67,22 +67,13 @@ export default {
     background: #f8f9fc;
     .panel-content {
       padding: 2rem;
-      .panel-title {
-        margin-top: 20px;
-        margin-bottom: 0px;
-        opacity: 0.2;
-        font-size: 22px;
-        text-transform: uppercase;
-      }
       .last-update {
+        color: #78829e;
         font-size: 12px;
         margin-top: 10px;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
         span {
           color: #155724;
-          background-color: #d4edda;
-          border: 1px solid #c3e6cb;
-          padding: 2px 6px;
           font-weight: bold;
         }
       }
@@ -112,6 +103,11 @@ export default {
       .vs__dropdown-menu {
         border-color: rgba(72, 94, 144, 0.16)!important;
         box-shadow: none;
+      }
+      .vs__selected {
+        font-size: 18px;
+        font-weight: bold;
+        text-transform: uppercase;
       }
     }
   }
