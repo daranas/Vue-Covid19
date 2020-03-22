@@ -25,7 +25,15 @@
 
 <script>
 import { LMap, LTileLayer, LMarker, LIcon } from 'vue2-leaflet'
-import { latLng } from 'leaflet'
+import L from 'leaflet'
+
+// remove default marker
+L.Icon.Default.imagePath = '/'
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+})
 
 export default {
   name: 'Icon',
@@ -38,7 +46,7 @@ export default {
   data () {
     return {
       zoom: 3.5,
-      center: latLng(-5, 120),
+      center: L.latLng(-5, 120),
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       staticAnchor: [16, 37],
