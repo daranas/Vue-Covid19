@@ -1,8 +1,8 @@
 <template>
   <div>
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <Panel />
     <Map />
+    <Panel />
   </div>
 </template>
 

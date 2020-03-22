@@ -1,25 +1,26 @@
 <template>
   <div id="col" class="panel">
     <div class="panel-content">
-      <v-select :options="countryOptions" :reduce="country => country.code" label="country" />
+      <v-select :options="countryOptions" label="country" />
       <h1 class="panel-title">Indonesia</h1>
+      <p class="last-update">Update Terakhir: <span>2020-03-22</span></p>
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4 col-xs-12 col-sm-12">
           <div class="card item-stat">
             <h6>Terkonfirmasi</h6>
-            <h1>1.450.000</h1>
+            <h1>{{ data.confirmed }}</h1>
           </div>
         </div>
-        <div class="col-md-4 item-stat">
+        <div class="col-md-4 col-xs-12 col-sm-12 item-stat">
           <div class="card item-stat">
             <h6>Sembuh</h6>
-            <h1 class="tx-success">450</h1>
+            <h1 class="tx-success">{{ data.recovered }}</h1>
           </div>
         </div>
-        <div class="col-md-4 item-stat">
-          <div class="card item-stat">
+        <div class="col-md-4 col-xs-12 col-sm-12 item-stat">
+          <div class="card item-stat last">
             <h6>Meninggal</h6>
-            <h1 class="tx-danger">450</h1>
+            <h1 class="tx-danger">{{ data.deaths }}</h1>
           </div>
         </div>
       </div>
@@ -29,11 +30,34 @@
 
 <script>
 import countryCode from '../assets/json/country.json'
+import { getDefaultData } from '../services'
 export default {
   data () {
     return {
+      data: {
+        confirmed: 0,
+        recovered: 0,
+        deaths: 0,
+        update: 0
+      },
       countryOptions: countryCode.country_codes
     }
+  },
+  methods: {
+    renderData () {
+      getDefaultData().then((data) => {
+        const resultData = {
+          confirmed: data.confirmed.value,
+          recovered: data.recovered.value,
+          deaths: data.deaths.value,
+          update: 0
+        }
+        this.data = resultData
+      })
+    }
+  },
+  mounted () {
+    this.renderData()
   }
 }
 </script>
@@ -45,10 +69,22 @@ export default {
       padding: 2rem;
       .panel-title {
         margin-top: 20px;
-        margin-bottom: 20px;
+        margin-bottom: 0px;
         opacity: 0.2;
         font-size: 22px;
         text-transform: uppercase;
+      }
+      .last-update {
+        font-size: 12px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        span {
+          color: #155724;
+          background-color: #d4edda;
+          border: 1px solid #c3e6cb;
+          padding: 2px 6px;
+          font-weight: bold;
+        }
       }
 
       .item-stat {
@@ -71,7 +107,22 @@ export default {
       .vs__dropdown-toggle {
         background: #ffffff;
         border: 1px solid rgba(72, 94, 144, 0.16);
+        padding: 5px 8px 8px 5px;
       }
+      .vs__dropdown-menu {
+        border-color: rgba(72, 94, 144, 0.16)!important;
+        box-shadow: none;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .item-stat {
+      border-radius: 0!important;
+      border-bottom-width: 0!important;
+    }
+    .item-stat.last {
+      border-bottom-width: 1px!important;
     }
   }
 </style>

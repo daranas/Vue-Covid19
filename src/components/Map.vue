@@ -3,6 +3,7 @@
     <l-map
       :zoom="zoom"
       :center="center"
+      scrollWheelZoom:false
       style="height: 100vh"
     >
       <l-tile-layer
@@ -36,12 +37,12 @@ export default {
   },
   data () {
     return {
-      zoom: 4,
+      zoom: 3.5,
       center: latLng(-5, 120),
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       staticAnchor: [16, 37],
-      customText: '12'
+      customText: 450
     }
   }
 }
@@ -58,13 +59,28 @@ export default {
         height: 56px;
         width: 56px;
         position: absolute;
-        left: -40px;
-        top: 0px;
+        left: -60px;
+        top: -15px;
       }
       .number {
         font-size: 32px;
         font-weight: bold;
-        padding-left: 20px;
+      }
+    }
+  }
+  @media (max-width: 768px) {
+    .vue2leaflet-map {
+      height: 200px!important;
+    }
+    .icon-marker {
+      img {
+        height: 38px!important;
+        width: 38px!important;
+        left: -40px!important;
+        top: -9px!important;
+      }
+      .number {
+        font-size: 24px!important;
       }
     }
   }
