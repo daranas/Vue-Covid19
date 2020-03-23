@@ -78,6 +78,7 @@ export default {
       .number {
         font-size: 32px;
         font-weight: bold;
+        font-family: 'Rubik', sans-serif;
       }
     }
   }

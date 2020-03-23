@@ -12,6 +12,10 @@ a {
   text-decoration: none;
 }
 
+img {
+  max-width: 100%;
+}
+
 #col {
   position: relative;
   float: left;
@@ -28,12 +32,37 @@ a {
   border: 1px solid rgba(72, 94, 144, 0.16);
   border-radius: 0.25rem;
 }
-.tx-danger {
-  color: #dc3545;
+
+.tx-default {
+  color: #001737!important;
+}
+
+.tx-primary {
+  color: #0168fa!important;
 }
 
 .tx-success {
-  color: #10b759;
+  color: #00cccc!important;
+}
+
+.tx-danger {
+  color: #f10075!important;
+}
+
+.bg-primary {
+  background-color: #0168fa!important;
+}
+
+.bg-success {
+  background-color: #00cccc!important;
+}
+
+.bg-warning {
+  background-color: #fd7e14!important;
+}
+
+.bg-danger {
+  background-color: #f10075!important;
 }
 
 @media (max-width: 768px) {

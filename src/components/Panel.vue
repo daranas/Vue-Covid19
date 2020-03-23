@@ -2,29 +2,50 @@
   <div id="col" class="panel">
     <div class="panel-content">
       <v-select v-model="countrySelected" :options="countryOptions" label="country" :clearable="false" @input="setSelected" />
-      <p class="last-update">Pembaharuan Terakhir: <span>{{ countryData.lastUpdate | moment("D MMM, YYYY - h:mm:ss a") }}</span></p>
+      <p class="last-update">Pembaruan Terakhir: <span class="tx-default">{{ countryData.lastUpdate | moment("D MMM YYYY h:mm:ss a") }}</span></p>
       <div class="row">
         <div class="col-md-4 col-xs-12 col-sm-12">
           <div class="card item-stat">
             <h6>Terkonfirmasi</h6>
             <h1>{{ countryData.confirmed.value | numeral('0,0') }}</h1>
+            <img src="../assets/images/stat1.png">
           </div>
         </div>
         <div class="col-md-4 col-xs-12 col-sm-12 item-stat">
           <div class="card item-stat">
-            <h6>Sembuh</h6>
-            <h1 class="tx-success">{{ countryData.recovered.value | numeral('0,0') }}</h1>
+            <h6 class="tx-success">Sembuh</h6>
+            <h1>{{ countryData.recovered.value | numeral('0,0') }}</h1>
+            <img src="../assets/images/stat2.png">
           </div>
         </div>
         <div class="col-md-4 col-xs-12 col-sm-12 item-stat">
           <div class="card item-stat last">
-            <h6>Meninggal</h6>
-            <h1 class="tx-danger">{{ countryData.deaths.value | numeral('0,0') }}</h1>
+            <h6 class="tx-danger">Meninggal</h6>
+            <h1>{{ countryData.deaths.value | numeral('0,0') }}</h1>
+            <img src="../assets/images/stat3.png">
           </div>
         </div>
       </div>
     </div>
-    <div>
+    <div class="panel-global">
+      <h1 class="panel-title">Global</h1>
+      <div class="row global-counter">
+        <div class="col-md-4 col-sm-4 col-xs-4 item">
+          <h6>Terkonfirmasi</h6>
+          <div class="rounded-circle bg-warning"></div>
+          <h1>{{ setGlobalData.confirmed.value | numeral('0,0') }}</h1>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-4 item">
+          <h6>Sembuh</h6>
+          <div class="rounded-circle bg-success"></div>
+          <h1>{{ setGlobalData.recovered.value | numeral('0,0') }}</h1>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-4 item">
+          <h6>Meninggal</h6>
+          <div class="rounded-circle bg-danger"></div>
+          <h1><h1>{{ setGlobalData.deaths.value | numeral('0,0') }}</h1></h1>
+        </div>
+      </div>
       <ve-line :data="chartData" :settings="chartSettings"/>
     </div>
   </div>
@@ -33,6 +54,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { FETCH_DATA } from '@/store/actions'
+import { getDataGlobal, getDataGlobalDaily } from '@/services'
 import countryCode from '@/assets/json/country.json'
 import VeLine from 'v-charts/lib/line.common'
 export default {
@@ -40,33 +62,59 @@ export default {
     return {
       countrySelected: 'Indonesia',
       countryOptions: countryCode.country_codes,
+      setGlobalData: {
+        confirmed: {
+          value: 0
+        },
+        recovered: {
+          value: 0
+        },
+        deaths: {
+          value: 0
+        }
+      },
       chartData: {
-        columns: ['date', 'cost', 'profit', 'growthRate', 'people'],
-        rows: [
-          { date: '01/01', cost: 1523, profit: 1523, growthRate: 0.12, people: 100 },
-          { date: '01/02', cost: 1223, profit: 1523, growthRate: 0.345, people: 100 },
-          { date: '01/03', cost: 2123, profit: 1523, growthRate: 0.7, people: 100 },
-          { date: '01/04', cost: 4123, profit: 1523, growthRate: 0.31, people: 100 },
-          { date: '01/05', cost: 3123, profit: 1523, growthRate: 0.12, people: 100 },
-          { date: '01/06', cost: 7123, profit: 1523, growthRate: 0.65, people: 100 }
-        ]
+        columns: ['Tanggal', 'Terkonfirmasi', 'Sembuh'],
+        rows: []
       },
       chartSettings: {
-        stack: { sell: ['cost', 'profit'] },
         area: true
       }
     }
   },
-  mounted () {
-    this.$store.dispatch(FETCH_DATA)
+  methods: {
+    setSelected (value) {
+      this.$store.dispatch(FETCH_DATA, value)
+    },
+    renderGlobalData () {
+      getDataGlobal().then(response => {
+        const { data } = response
+        this.setGlobalData = data
+      })
+    },
+    renderGlobalDataDaily () {
+      getDataGlobalDaily().then(response => {
+        const { data } = response
+        for (let i = 0; i < data.length; i++) {
+          const chartItem = {
+            Tanggal: this.$moment(data[i].reportDate).format('D/MM'),
+            Terkonfirmasi: data[i].totalConfirmed,
+            Sembuh: data[i].totalRecovered
+          }
+          this.chartData.rows.push(chartItem)
+        }
+      })
+    }
   },
   computed: {
     ...mapGetters(['countryData'])
   },
-  methods: {
-    setSelected (value) {
-      this.$store.dispatch(FETCH_DATA, value)
-    }
+  mounted () {
+    this.$store.dispatch(FETCH_DATA)
+    this.renderGlobalData()
+    this.renderGlobalDataDaily()
+    console.log(this.chartData[0])
+    console.log(this.chartData[1])
   },
   components: { VeLine }
 }
@@ -74,33 +122,34 @@ export default {
 
 <style lang="scss">
   .panel {
-    background: #f8f9fc;
     .panel-content {
       padding: 2rem;
       .last-update {
-        color: #8094ae;
+        color: #8392a5;
         font-size: 12px;
         margin-top: 8px;
         margin-bottom: 30px;
-        span {
-          color: #155724;
-        }
       }
 
       .item-stat {
         text-align: center;
+        padding-bottom: 10px;
         h6 {
           color: #8392a5;
-          font-size: 12px;
-          letter-spacing: 0.5px;
+          font-size: 11px;
+          letter-spacing: .5px;
           text-transform: uppercase;
           margin: 0 0 5px;
         }
 
         h1 {
-          font-size: 36px;
+          font-size: 34px;
+          font-family: 'Rubik', sans-serif;
           margin-top: 0;
           margin-bottom: 0;
+        }
+        img {
+          margin-top: 10px;
         }
       }
 
@@ -117,6 +166,47 @@ export default {
         font-size: 18px;
         font-weight: bold;
         text-transform: uppercase;
+      }
+    }
+  }
+
+  .panel-global {
+    padding: 0 2rem 2rem;
+    .panel-title {
+      opacity: 0.2;
+      font-size: 22px;
+      margin-top: 5px;
+      letter-spacing: -.5px;
+      text-transform: uppercase;
+    }
+    .ve-line {
+      margin-left: -2rem;
+      margin-right: -2rem;
+    }
+    .global-counter {
+      margin-bottom: 20px;
+      .item {
+        h6 {
+          color: #8392a5;
+          font-size: 10px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          margin: 0 0 10px;
+        }
+        h1 {
+          font-size: 18px;
+          font-family: 'Rubik', sans-serif;
+          display: inline-block;
+          margin: 0;
+        }
+        .rounded-circle {
+          height: 10px;
+          width: 10px;
+          float: left;
+          margin-right: 5px;
+          margin-top: 7px;
+          border-radius: 50% !important;
+        }
       }
     }
   }
