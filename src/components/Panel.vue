@@ -113,8 +113,6 @@ export default {
     this.$store.dispatch(FETCH_DATA)
     this.renderGlobalData()
     this.renderGlobalDataDaily()
-    console.log(this.chartData[0])
-    console.log(this.chartData[1])
   },
   components: { VeLine }
 }
