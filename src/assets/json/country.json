@@ -17,14 +17,6 @@
       "longitude": 3
     },
     {
-      "country": "American Samoa",
-      "alpha2": "AS",
-      "alpha3": "ASM",
-      "numeric": 16,
-      "latitude": -14.3333,
-      "longitude": -170
-    },
-    {
       "country": "Andorra",
       "alpha2": "AD",
       "alpha3": "AND",
@@ -39,22 +31,6 @@
       "numeric": 24,
       "latitude": -12.5,
       "longitude": 18.5
-    },
-    {
-      "country": "Anguilla",
-      "alpha2": "AI",
-      "alpha3": "AIA",
-      "numeric": 660,
-      "latitude": 18.25,
-      "longitude": -63.1667
-    },
-    {
-      "country": "Antarctica",
-      "alpha2": "AQ",
-      "alpha3": "ATA",
-      "numeric": 10,
-      "latitude": -90,
-      "longitude": 0
     },
     {
       "country": "Antigua and Barbuda",
@@ -79,14 +55,6 @@
       "numeric": 51,
       "latitude": 40,
       "longitude": 45
-    },
-    {
-      "country": "Aruba",
-      "alpha2": "AW",
-      "alpha3": "ABW",
-      "numeric": 533,
-      "latitude": 12.5,
-      "longitude": -69.9667
     },
     {
       "country": "Australia",

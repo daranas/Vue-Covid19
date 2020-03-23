@@ -217,5 +217,12 @@ export default {
     .item-stat.last {
       border-bottom-width: 1px!important;
     }
+    .panel .panel-content .item-stat {
+      padding-bottom: 0!important;
+    }
+    .panel .panel-content .item-stat img {
+      max-width: 60%!important;
+      margin-bottom: 5px!important;
+    }
   }
 </style>
