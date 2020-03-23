@@ -2,21 +2,20 @@
   <div id="col" class="map">
     <l-map
       :zoom="zoom"
-      :center="center"
-      scrollWheelZoom:false
+      :center="[countryData.geolocation.latitude, countryData.geolocation.longitude]"
       style="height: 100vh"
     >
       <l-tile-layer
         :url="url"
         :attribution="attribution"
       />
-      <l-marker :lat-lng="center">
+      <l-marker :lat-lng="[countryData.geolocation.latitude, countryData.geolocation.longitude]">
         <l-icon
           :icon-anchor="staticAnchor"
           class-name="icon-marker"
         >
           <img src="../assets/images/virus.png">
-          <div class="number">{{ customText }}</div>
+          <div class="number">{{ countryData.confirmed.value | numeral('0,0') }}</div>
         </l-icon>
       </l-marker>
     </l-map>
@@ -24,10 +23,11 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { FETCH_DATA } from '@/store/actions'
 import { LMap, LTileLayer, LMarker, LIcon } from 'vue2-leaflet'
 import L from 'leaflet'
 
-// remove default marker
 L.Icon.Default.imagePath = '/'
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
@@ -46,12 +46,17 @@ export default {
   data () {
     return {
       zoom: 3.5,
-      center: L.latLng(-5, 120),
+      center: [-5, 120],
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      staticAnchor: [16, 37],
-      customText: 450
+      staticAnchor: [16, 37]
     }
+  },
+  mounted () {
+    this.$store.dispatch(FETCH_DATA)
+  },
+  computed: {
+    ...mapGetters(['countryData'])
   }
 }
 </script>

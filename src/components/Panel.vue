@@ -1,25 +1,25 @@
 <template>
   <div id="col" class="panel">
     <div class="panel-content">
-      <v-select v-model="countrySelected" :options="countryOptions" label="country" />
-      <p class="last-update">Update Terakhir: <span>2020-03-22</span></p>
+      <v-select v-model="countrySelected" :options="countryOptions" label="country" @input="setSelected" />
+      <p class="last-update">Update Terakhir: <span>{{ countryData.lastUpdate | moment("D MMMM, YYYY") }}</span></p>
       <div class="row">
         <div class="col-md-4 col-xs-12 col-sm-12">
           <div class="card item-stat">
             <h6>Terkonfirmasi</h6>
-            <h1>{{ data.confirmed }}</h1>
+            <h1>{{ countryData.confirmed.value | numeral('0,0') }}</h1>
           </div>
         </div>
         <div class="col-md-4 col-xs-12 col-sm-12 item-stat">
           <div class="card item-stat">
             <h6>Sembuh</h6>
-            <h1 class="tx-success">{{ data.recovered }}</h1>
+            <h1 class="tx-success">{{ countryData.recovered.value | numeral('0,0') }}</h1>
           </div>
         </div>
         <div class="col-md-4 col-xs-12 col-sm-12 item-stat">
           <div class="card item-stat last">
             <h6>Meninggal</h6>
-            <h1 class="tx-danger">{{ data.deaths }}</h1>
+            <h1 class="tx-danger">{{ countryData.deaths.value | numeral('0,0') }}</h1>
           </div>
         </div>
       </div>
@@ -28,36 +28,26 @@
 </template>
 
 <script>
-import countryCode from '../assets/json/country.json'
-import { getDefaultData } from '../services'
+import { mapGetters } from 'vuex'
+import { FETCH_DATA } from '@/store/actions'
+import countryCode from '@/assets/json/country.json'
 export default {
   data () {
     return {
-      data: {
-        confirmed: 0,
-        recovered: 0,
-        deaths: 0,
-        update: 0
-      },
       countrySelected: 'Indonesia',
       countryOptions: countryCode.country_codes
     }
   },
-  methods: {
-    renderData () {
-      getDefaultData().then((data) => {
-        const resultData = {
-          confirmed: data.confirmed.value,
-          recovered: data.recovered.value,
-          deaths: data.deaths.value,
-          update: 0
-        }
-        this.data = resultData
-      })
-    }
-  },
   mounted () {
-    this.renderData()
+    this.$store.dispatch(FETCH_DATA)
+  },
+  computed: {
+    ...mapGetters(['countryData'])
+  },
+  methods: {
+    setSelected (value) {
+      this.$store.dispatch(FETCH_DATA, value)
+    }
   }
 }
 </script>
