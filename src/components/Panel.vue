@@ -74,7 +74,7 @@ export default {
         }
       },
       chartData: {
-        columns: ['Tanggal', 'Terkonfirmasi'],
+        columns: ['Tanggal', 'Terkonfirmasi', 'Sembuh', 'Meninggal'],
         rows: []
       },
       chartSettings: {
@@ -97,9 +97,10 @@ export default {
         const { data } = response
         for (let i = 0; i < data.length; i++) {
           const chartItem = {
-            Tanggal: this.$moment(data[i].date).format('D/MM'),
+            Tanggal: this.$moment(data[i].reportDate).format('D/MM'),
             Terkonfirmasi: data[i].confirmed.total,
-            Sembuh: data[i].deaths.total
+            Sembuh: data[i].recovered.total,
+            Meninggal: data[i].deaths.total
           }
           this.chartData.rows.push(chartItem)
         }
