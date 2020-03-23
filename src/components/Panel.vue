@@ -74,7 +74,7 @@ export default {
         }
       },
       chartData: {
-        columns: ['Tanggal', 'Terkonfirmasi', 'Sembuh'],
+        columns: ['Tanggal', 'Terkonfirmasi'],
         rows: []
       },
       chartSettings: {
@@ -96,10 +96,11 @@ export default {
       getDataGlobalDaily().then(response => {
         const { data } = response
         for (let i = 0; i < data.length; i++) {
+          console.log(data[i])
           const chartItem = {
-            Tanggal: this.$moment(data[i].reportDate).format('D/MM'),
-            Terkonfirmasi: data[i].totalConfirmed,
-            Sembuh: data[i].totalRecovered
+            Tanggal: this.$moment(data[i].date).format('D/MM'),
+            Terkonfirmasi: data[i].confirmed.total,
+            Sembuh: data[i].deaths.total
           }
           this.chartData.rows.push(chartItem)
         }
