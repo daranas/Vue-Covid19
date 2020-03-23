@@ -185,6 +185,7 @@ export default {
     .global-counter {
       margin-bottom: 20px;
       .item {
+        text-align: center;
         h6 {
           color: #8392a5;
           font-size: 10px;
@@ -201,7 +202,7 @@ export default {
         .rounded-circle {
           height: 10px;
           width: 10px;
-          float: left;
+          display: inline-block;
           margin-right: 5px;
           margin-top: 7px;
           border-radius: 50% !important;
