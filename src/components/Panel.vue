@@ -1,8 +1,8 @@
 <template>
   <div id="col" class="panel">
     <div class="panel-content">
-      <v-select v-model="countrySelected" :options="countryOptions" label="country" @input="setSelected" />
-      <p class="last-update">Update Terakhir: <span>{{ countryData.lastUpdate | moment("D MMMM, YYYY") }}</span></p>
+      <v-select v-model="countrySelected" :options="countryOptions" label="country" :clearable="false" @input="setSelected" />
+      <p class="last-update">Pembaharuan Terakhir: <span>{{ countryData.lastUpdate | moment("D MMM, YYYY - h:mm:ss a") }}</span></p>
       <div class="row">
         <div class="col-md-4 col-xs-12 col-sm-12">
           <div class="card item-stat">
@@ -24,6 +24,9 @@
         </div>
       </div>
     </div>
+    <div>
+      <ve-line :data="chartData" :settings="chartSettings"/>
+    </div>
   </div>
 </template>
 
@@ -31,11 +34,27 @@
 import { mapGetters } from 'vuex'
 import { FETCH_DATA } from '@/store/actions'
 import countryCode from '@/assets/json/country.json'
+import VeLine from 'v-charts/lib/line.common'
 export default {
   data () {
     return {
       countrySelected: 'Indonesia',
-      countryOptions: countryCode.country_codes
+      countryOptions: countryCode.country_codes,
+      chartData: {
+        columns: ['date', 'cost', 'profit', 'growthRate', 'people'],
+        rows: [
+          { date: '01/01', cost: 1523, profit: 1523, growthRate: 0.12, people: 100 },
+          { date: '01/02', cost: 1223, profit: 1523, growthRate: 0.345, people: 100 },
+          { date: '01/03', cost: 2123, profit: 1523, growthRate: 0.7, people: 100 },
+          { date: '01/04', cost: 4123, profit: 1523, growthRate: 0.31, people: 100 },
+          { date: '01/05', cost: 3123, profit: 1523, growthRate: 0.12, people: 100 },
+          { date: '01/06', cost: 7123, profit: 1523, growthRate: 0.65, people: 100 }
+        ]
+      },
+      chartSettings: {
+        stack: { sell: ['cost', 'profit'] },
+        area: true
+      }
     }
   },
   mounted () {
@@ -48,7 +67,8 @@ export default {
     setSelected (value) {
       this.$store.dispatch(FETCH_DATA, value)
     }
-  }
+  },
+  components: { VeLine }
 }
 </script>
 

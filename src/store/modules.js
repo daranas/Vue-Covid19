@@ -1,13 +1,19 @@
-import { getGlobalData, getData } from '@/services'
+import { getData } from '@/services'
 import { FETCH_DATA } from './actions'
 import { SET_DATA } from './mutations'
 
 const state = {
   data: {
-    confirmed: {},
-    recovered: {},
-    deaths: {},
-    lastUpdate: {},
+    confirmed: {
+      value: 0
+    },
+    recovered: {
+      value: 0
+    },
+    deaths: {
+      value: 0
+    },
+    lastUpdate: null,
     geolocation: {
       country: '',
       alpha2: '',
@@ -31,10 +37,14 @@ const defaultCountry = {
 const actions = {
   async [FETCH_DATA] (context, payload) {
     const countryCode = !payload ? 'ID' : payload.alpha2
-    const { data } = payload === null ? await getGlobalData() : await getData(countryCode).catch(() => alert('Data tidak tersedia'))
-    data.geolocation = !payload ? defaultCountry : payload
-    context.commit(SET_DATA, data)
-    return data
+    await getData(countryCode).then(result => {
+      const { data } = result
+      data.geolocation = !payload ? defaultCountry : payload
+      context.commit(SET_DATA, data)
+      return data
+    }).catch(() => {
+      alert('Data tidak tersedia')
+    })
   }
 }
 
