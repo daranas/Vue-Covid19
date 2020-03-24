@@ -1,4 +1,4 @@
-# covid19
+# COVID-19 (VueJS)
 
 ## Project setup
 ```
