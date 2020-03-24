@@ -2,7 +2,7 @@
   <div id="col" class="map">
     <l-map
       :zoom="zoom"
-      :center="[countryData.geolocation.latitude, countryData.geolocation.longitude]"
+      :center="[geo.latitude, geo.longitude]"
       :key="mapKey"
       style="height: 100vh"
     >
@@ -10,7 +10,7 @@
         :url="url"
         :attribution="attribution"
       />
-      <l-marker :lat-lng="[countryData.geolocation.latitude, countryData.geolocation.longitude]">
+      <l-marker :lat-lng="[geo.latitude, geo.longitude]">
         <l-icon
           :icon-anchor="staticAnchor"
           class-name="icon-marker"
@@ -51,23 +51,29 @@ export default {
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       staticAnchor: [16, 37],
-      mapKey: 0
+      mapKey: 0,
+      geo: {
+        latitude: -5,
+        longitude: 120
+      }
     }
   },
   mounted () {
     this.$store.dispatch(FETCH_DATA)
-    setTimeout(function () {
-      this.mapKey += 1
-    }, 3000)
-    if (localStorage.getItem('reloaded')) {
-      localStorage.removeItem('reloaded')
-    } else {
-      localStorage.setItem('reloaded', '1')
-      location.reload()
-    }
   },
   computed: {
+    setGeo: function () {
+      return this.$store.state.modules.data.geolocation
+    },
     ...mapGetters(['countryData'])
+  },
+  watch: {
+    setGeo: function (newValue, oldValue) {
+      if (oldValue.alpha2 !== newValue.alpha2) {
+        this.geo.latitude = newValue.latitude
+        this.geo.longitude = newValue.longitude
+      }
+    }
   }
 }
 </script>
