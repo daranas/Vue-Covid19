@@ -59,6 +59,12 @@ export default {
     setTimeout(function () {
       this.mapKey += 1
     }, 3000)
+    if (localStorage.getItem('reloaded')) {
+      localStorage.removeItem('reloaded')
+    } else {
+      localStorage.setItem('reloaded', '1')
+      location.reload()
+    }
   },
   computed: {
     ...mapGetters(['countryData'])
