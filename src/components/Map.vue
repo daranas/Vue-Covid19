@@ -3,6 +3,7 @@
     <l-map
       :zoom="zoom"
       :center="[countryData.geolocation.latitude, countryData.geolocation.longitude]"
+      :key="mapKey"
       style="height: 100vh"
     >
       <l-tile-layer
@@ -49,11 +50,15 @@ export default {
       center: [-5, 120],
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      staticAnchor: [16, 37]
+      staticAnchor: [16, 37],
+      mapKey: 0
     }
   },
   mounted () {
     this.$store.dispatch(FETCH_DATA)
+    setTimeout(function () {
+      this.mapKey += 1
+    }, 3000)
   },
   computed: {
     ...mapGetters(['countryData'])

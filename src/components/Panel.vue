@@ -96,6 +96,7 @@ export default {
       getDataGlobalDaily().then(response => {
         const { data } = response
         for (let i = 0; i < data.length; i++) {
+          // console.log(data[i])
           const chartItem = {
             Tanggal: this.$moment(data[i].reportDate).format('D/MM'),
             Terkonfirmasi: data[i].confirmed.total,
