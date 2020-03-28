@@ -25,5 +25,5 @@ npm run test
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Data Resource
+See [mathdroid/covid19](https://covid19.mathdro.id).
